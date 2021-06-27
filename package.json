@@ -1,0 +1,11 @@
+{
+  "name": "pc-control",
+  "version": "1.0.0",
+  "description": "This is an auxiliary app. The project that aims to setup the Node development automatically. The following are the basic setup configurations that will be installed:",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Dexter",
+  "license": "ISC"
+}

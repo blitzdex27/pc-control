@@ -1,0 +1,37 @@
+[
+  {
+    "name": "nodemon",
+    "configFile": "nodemon.json",
+    "dependencies": ["nodemon"]
+  },
+  {
+    "name": "eslint",
+    "configFile": ".eslintrc.json",
+    "dependencies": ["eslint", "eslint-config-airbnb-base"]
+  },
+  {
+    "name": "prettier",
+    "configFile": ".prettierrc",
+    "dependencies": [
+      "prettier",
+      "eslint-config-prettier",
+      "eslint-plugin-prettier",
+      "eslint-plugin-import"
+    ]
+  },
+  {
+    "name": "babel",
+    "configFile": ".babelrc",
+    "dependencies": [
+      "@babel/core",
+      "@babel/preset-env",
+      "babel-loader",
+      "@babel/node"
+    ]
+  },
+  {
+    "name": "webpack",
+    "configFile": "webpack.config.js",
+    "dependencies": ["webpack", "webpack-cli", "webpack-node-externals"]
+  }
+]
