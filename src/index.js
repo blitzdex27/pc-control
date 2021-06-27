@@ -1,5 +1,5 @@
-import runScript from './runScript';
+import app from './app';
 
-require('regenerator-runtime');
-
-runScript('test');
+app.listen(3000, () => {
+  process.stdout.write('Listening to port 3000');
+});
