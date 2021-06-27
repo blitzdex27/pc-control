@@ -30,13 +30,6 @@ module.exports = (action) =>
       splitIndex.includes(regenerator3) ||
       splitIndex.includes(regenerator4);
 
-    // console.log('regenerator1', regenerator1);
-    // console.log('regenerator2', regenerator2);
-    // console.log('regenerator3', regenerator3);
-    // console.log('regenerator4', regenerator4);
-    // console.log('hasRegDef', hasRegeneratorDefined)
-    // console.log('splitIndex', splitIndex);
-
     if (action === 'install') {
       if (!hasRegeneratorDefined) {
         newIndex = `${regenerator1}; ${index}`;

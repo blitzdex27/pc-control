@@ -1,1 +1,5 @@
-process.stdout.write('hi there\n');
+import runScript from './runScript';
+
+require('regenerator-runtime');
+
+runScript('test');
