@@ -4,6 +4,7 @@ import runScript from './runScript';
 const app = express();
 
 app.get('/', (req, res) => {
+  console.log('listening')
   res.json({ status: 'online' });
 });
 
