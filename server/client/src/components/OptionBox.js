@@ -40,13 +40,14 @@ function RemoveUnit({ slot, submitActionHandler, cancelActionHandler }) {
 }
 
 function ShutdownUnit({ slot, submitActionHandler, cancelActionHandler }) {
-  const action = `/command/shutdown/${slot}`;
+  const formHandler = (e) => {
+    const url = `/update-unit/?action=shutdown&slot=${slot}`;
+    submitActionHandler(e, url);
+  };
   return (
     <form
-      onSubmit={submitActionHandler}
+      onSubmit={formHandler}
       className="add-unit"
-      method="POST"
-      action={action}
     >
       <h2>Shutdown PC Unit</h2>
       <p>Are you sure you want to SHUTDOWN this PC Unit?</p>

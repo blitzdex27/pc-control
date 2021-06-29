@@ -1,15 +1,20 @@
 const { Router } = require('express');
 const path = require('path');
 const fs = require('fs');
+const fetch = require('node-fetch');
 
 require('regenerator-runtime');
 
 const router = new Router();
 
-const isProd = path.parse(process.argv[1]).name === 'main'
+const isProd = path.parse(process.argv[1]).name === 'main';
 
-const unitsStatePath = path.resolve(__dirname, `../${isProd ? '' : '..'}`, 'data', 'units.json');
-
+const unitsStatePath = path.resolve(
+  __dirname,
+  `../${isProd ? '' : '..'}`,
+  'data',
+  'units.json'
+);
 
 router.put('/', async (req, res, next) => {
   const { action, slot, pcname, ipadd } = req.query;
@@ -41,10 +46,18 @@ router.put('/', async (req, res, next) => {
     fs.writeFileSync(unitsStatePath, JSON.stringify(updatedUnits, null, 2));
     res.status(200).send({ status: 'updated' });
   } else if (action === 'shutdown') {
-    const ip = units.find((unit) => unit.slot === parseInt(slot, 10));
-    const url = `http://${ip}/command/?action=shutdown`;
-    const result = await fetch(url);
-    const json = await result.parse();
+    console.log('\nshutting down');
+    const selUnit = units.find((unit) => unit.slot === parseInt(slot, 10));
+    const url = `http://${selUnit.ip}/command`;
+    const result = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify({ action: 'shutdown' }),
+    });
+    const json = await result.json();
+
     if (json.success) {
       units.forEach((unit) => {
         if (unit.slot === slot) {
@@ -52,13 +65,13 @@ router.put('/', async (req, res, next) => {
           unit.status.action = 'Shutdown';
         }
       });
-      fs.writeFileSync(unitsStatePath, units);
+      fs.writeFileSync(unitsStatePath, JSON.stringify(units, null, 2));
       res.status(200).send({ status: 'shutting down' });
     } else {
       res.send(502, { status: 'cannot contact the client computer unit' });
     }
   } else {
-    res.send(400, { status: 'bad request' });
+    res.status(400).send({ status: 'bad request' });
   }
 });
 

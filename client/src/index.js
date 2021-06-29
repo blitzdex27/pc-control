@@ -3,6 +3,6 @@ import app from './app';
 
 const port = 1010;
 
-app.listen(port, '192.168.1.15', () => {
+app.listen(port, () => {
   process.stdout.write(`Listening to port ${port}`);
 });
