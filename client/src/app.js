@@ -10,7 +10,7 @@ app.get('/', (req, res) => {
   res.json({ status: 'online' });
 });
 
-app.post('/command', (req, res) => {
+app.get('/command', (req, res) => {
   const status = runScript(req.bodyaction);
   console.log('shutting down?');
   if (status) {

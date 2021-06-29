@@ -8,5 +8,15 @@
       "mounted": false
     },
     "ip": "192.168.1.9:1010"
+  },
+  {
+    "slot": 2,
+    "pcName": "dex",
+    "status": {
+      "online": false,
+      "action": null,
+      "mounted": false
+    },
+    "ip": ""
   }
 ]

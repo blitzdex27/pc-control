@@ -2,7 +2,6 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 
-
 const updateUnitRoute = require('./routes/updateUnitRoute');
 
 require('regenerator-runtime');
@@ -25,5 +24,12 @@ app.get('/units-states', (req, res) => {
 });
 
 app.use('/update-unit', updateUnitRoute);
+
+app.use((res, req, next) => {
+  res.send(`
+  <h1>Error!</h1>
+  <p>Something went wrong</p>
+  `);
+});
 
 module.exports = app;
