@@ -11,7 +11,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/command', (req, res) => {
-  const status = runScript(req.bodyaction);
+  const status = runScript(req.query.action);
   console.log('shutting down?');
   if (status) {
     console.log('shutting down');

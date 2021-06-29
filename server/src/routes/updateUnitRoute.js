@@ -50,7 +50,7 @@ router.put('/', async (req, res, next) => {
     } else if (action === 'shutdown') {
       console.log('\nshutting down');
       const selUnit = units.find((unit) => unit.slot === parseInt(slot, 10));
-      const url = `http://${selUnit.ip}/command`;
+      const url = `http://${selUnit.ip}/command/?action=shutdown`;
       const result = await pcAction(url);
 
       // const result = await fetch(url, {
