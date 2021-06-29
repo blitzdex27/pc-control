@@ -11,9 +11,14 @@ app.get('/', (req, res) => {
 });
 
 app.post('/command', (req, res) => {
-  runScript(req.bodyaction);
-
-  res.json({ success: true });
+  const status = runScript(req.bodyaction);
+  console.log('shutting down?');
+  if (status) {
+    console.log('shutting down');
+    res.json({ success: true });
+  } else {
+    res.status(400);
+  }
 });
 
 export default app;

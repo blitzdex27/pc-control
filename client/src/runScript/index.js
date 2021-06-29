@@ -1,7 +1,7 @@
 import { test, shutdown, restart } from './scriptLib';
 
 const runScript = (scriptName) => {
-  let status = 'online';
+  let status = null;
   switch (scriptName) {
     case 'test':
       test();
@@ -17,7 +17,7 @@ const runScript = (scriptName) => {
       break;
 
     default:
-      test();
+      status = null
   }
   return status;
 };
