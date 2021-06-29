@@ -1,0 +1,17 @@
+.pc-block {
+  width: 100%;
+  height: 100%;
+  padding: 0 5%;
+}
+.pc-block ul {
+  padding-inline-start: 0;
+}
+
+.pc-block li {
+  list-style: none;
+  font-size: small;
+}
+
+.pc-block span {
+  font-weight: bold;
+}

@@ -1,0 +1,42 @@
+.option-menu {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+  text-align: center;
+}
+
+.option-box {
+  --w: 80vw;
+  --h: 80vh;
+  width: var(--w);
+  height: var(--h);
+  display: grid;
+  position: absolute;
+  background-color: aqua;
+  top: calc((100vh / 2) - var(--h) / 2);
+  left: calc((100vw / 2) - var(--w) / 2);
+  z-index: 10;
+}
+
+.add-unit {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 25px 25px 25px 25px 1fr 1fr;
+  row-gap: 50px;
+}
+.add-unit > * {
+  grid-column: 2/4;
+}
+
+.add-unit > button {
+  height: 100%;
+}
+.backdrop {
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+  opacity: 50%;
+  position: absolute;
+  top: 0;
+}
