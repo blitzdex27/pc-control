@@ -2,69 +2,73 @@ const { Router } = require('express');
 const path = require('path');
 const fs = require('fs');
 const fetch = require('node-fetch');
-const pcAction = require('../controllers/pcAction');
 
 require('regenerator-runtime');
 
 const router = new Router();
 
 const isProd = path.parse(process.argv[1]).name === 'main';
-
-const unitsStatePath = path.resolve(
-  __dirname,
-  `../${isProd ? '' : '..'}`,
-  'data',
-  'units.json'
-);
+const dataPath = path.resolve(__dirname, `../${isProd ? '' : '..'}`, 'data');
+const unitsPath = path.resolve(dataPath, 'units.json');
+const unSlottedUnitsPath = path.resolve(dataPath, 'unSlottedUnits.json');
 
 const clientPort = 1010;
 
 router.put('/', async (req, res, next) => {
   try {
-    const { action, slot, pcname, ipadd } = req.query;
-    const units = JSON.parse(fs.readFileSync(unitsStatePath));
+    const { action, slot, newslot, ip } = req.query;
+    let units = JSON.parse(fs.readFileSync(unitsPath));
     const slotInt = parseInt(slot, 10);
+    const newSlotInt = parseInt(newslot, 10);
 
     if (action === 'modify') {
-      const newUnit = {
-        slot: slotInt,
-        pcName: pcname,
-        status: { online: false, action: null, mounted: true },
-        ip: ipadd,
-      };
+      console.log('modify');
+      let unSlottedUnits = JSON.parse(fs.readFileSync(unSlottedUnitsPath));
 
-      if (units.find((unit) => unit.slot === slotInt)) {
-        const toModifyIndex = units.findIndex((unit) => unit.slot === slotInt);
-        units.splice(toModifyIndex, 1, newUnit);
-      } else {
-        units.push(newUnit);
+      const [unitFromSlotted] = units.filter((unit) => unit.ip === ip);
+      if (unitFromSlotted) {
+        console.log('slotted', unitFromSlotted);
+        unitFromSlotted.slot = newSlotInt;
+        units = units.filter((unit) => unit.slot !== newSlotInt);
+        units.push(unitFromSlotted);
       }
 
-      fs.writeFileSync(unitsStatePath, JSON.stringify(units, null, 2));
-
-      res.status(200).send({ status: 'updated' });
-    } else if (action === 'remove') {
-      const updatedUnits = units.filter(
-        (unit) => unit.slot !== parseInt(slot, 10)
+      const [unitFromUnSlotted] = unSlottedUnits.filter(
+        (unit) => unit.ip === ip
       );
-      fs.writeFileSync(unitsStatePath, JSON.stringify(updatedUnits, null, 2));
-      res.status(200).send({ status: 'updated' });
-    } else if (action === 'shutdown') {
+      if (unitFromUnSlotted) {
+        unitFromUnSlotted.slot = newSlotInt;
+        units = units.filter((unit) => unit.slot !== newSlotInt);
+        console.log('unslotted', unitFromUnSlotted);
+        units.push(unitFromUnSlotted);
+
+        const toDel = unSlottedUnits.findIndex((unit) => unit.ip === ip);
+        unSlottedUnits.splice(toDel, 1);
+        console.log('uUnits', unSlottedUnits);
+      }
+
+      fs.writeFileSync(unitsPath, JSON.stringify(units, null, 2));
+      fs.writeFileSync(
+        unSlottedUnitsPath,
+        JSON.stringify(unSlottedUnits, null, 2)
+      );
+
+      return res.status(200).send({ status: 'updated' });
+    }
+
+    if (action === 'remove') {
+      const updatedUnits = units.filter((unit) => unit.slot !== slotInt);
+      fs.writeFileSync(unitsPath, JSON.stringify(updatedUnits, null, 2));
+      return res.status(200).send({ status: 'updated' });
+    }
+
+    if (action === 'shutdown') {
       console.log('\nshutting down');
-      const selUnit = units.find((unit) => unit.slot === parseInt(slot, 10));
+      const selUnit = units.find((unit) => unit.slot === slotInt);
       const url = `http://${selUnit.ip}:${clientPort}/command/?action=shutdown`;
       // const result = await pcAction(url);
 
-      const result = await fetch(
-        url
-        //   , {
-        //   method: 'POST',
-        //   headers: {
-        //     'Content-type': 'application/json',
-        //   },
-        //   body: JSON.stringify({ action: 'shutdown' }),
-        // }
-      );
+      const result = await fetch(url);
       const json = await result.json();
       console.log(json);
 
@@ -75,7 +79,7 @@ router.put('/', async (req, res, next) => {
             unit.status.action = 'Shutdown';
           }
         });
-        fs.writeFileSync(unitsStatePath, JSON.stringify(units, null, 2));
+        fs.writeFileSync(unitsPath, JSON.stringify(units, null, 2));
         res.status(200).send({ status: 'shutting down' });
       } else {
         res.send(502, { status: 'cannot contact the client computer unit' });

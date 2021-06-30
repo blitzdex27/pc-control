@@ -1,9 +1,7 @@
 .App {
-  min-height: 100vh;
   display: grid;
-  grid-template-columns: repeat(10, 1fr);
-  grid-template-rows: repeat(3, 1fr);
-  gap: 20px;
-  padding: 20px;
-  background-color: #DEB228;
+  grid-template-columns: 10px repeat(12, 1fr) 10px;
+  grid-template-rows: 40px 1fr 40px;
 }
+
+

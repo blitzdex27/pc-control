@@ -18,9 +18,14 @@ function PcBlock({ unit, optionHandler }) {
     backgroundColor,
     color,
   };
+
   return (
-    <div onClick={(e) => optionHandler(e, unit.slot)} style={style} className="pc-block">
-      {unit.pcName}
+    <div
+      onClick={(e) => optionHandler(unit)}
+      style={style}
+      className="pc-block"
+    >
+      <h4>{unit.pcName}</h4>
       <ul>
         <li>
           <span>Online:</span> {unit.status.online ? 'true' : 'false'}

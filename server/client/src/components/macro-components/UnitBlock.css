@@ -1,0 +1,22 @@
+.units-block-cont {
+  grid-column: 2 / 12;
+  grid-row: 2/3;
+  background-color: aqua;
+  height: 100%;
+  width: 100%;
+}
+
+.units-block {
+  /* min-height: 100%; */
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 5px;
+  /* padding: 10px; */
+  background-color: #deb228;
+  margin: 10px;
+}
+
+.units-block-cont h2 {
+  text-align: center;
+}

@@ -1,22 +1,20 @@
 import { useRef, useState } from 'react';
 import './OptionBox.css';
 
-function AddUnit({ slot, submitActionHandler, cancelActionHandler }) {
-  const pcName = useRef();
-  const ipAdd = useRef();
+function AddUnit({ unit, submitActionHandler, cancelActionHandler }) {
+  const newSlot = useRef();
+  const { slot, ip } = unit;
 
   const formHandler = (e) => {
-    const url = `/update-unit/?action=modify&slot=${slot}&pcname=${pcName.current.value}&ipadd=${ipAdd.current.value}`;
+    const url = `/update-unit/?action=modify&slot=${slot}&newslot=${newSlot.current.value}&ip=${ip}`;
     submitActionHandler(e, url);
   };
 
   return (
     <form onSubmit={formHandler} className="mod-unit">
-      <h2>Add/Modify PC Unit [SLOT {slot}]</h2>
-      <label>PC Name:</label>
-      <input ref={pcName} type="text"></input>
-      <label>IP Address:</label>
-      <input ref={ipAdd} type="text"></input>
+      <h2>Add/Modify PC Unit Slot [CURRENT: SLOT {slot}]</h2>
+      <label>New slot:</label>
+      <input ref={newSlot} type="text"></input>
       <button>Add</button>
     </form>
   );
@@ -102,8 +100,9 @@ function OptionMenu({ slot, handlers }) {
   );
 }
 
-function OptionBox({ slot, submitActionHandler, cancelActionHandler }) {
+function OptionBox({ unit, submitActionHandler, cancelActionHandler }) {
   const [selectedOpt, setSelectedOpt] = useState(null);
+  const { slot } = unit;
 
   const handlers = {
     addPc: () => {
@@ -126,7 +125,7 @@ function OptionBox({ slot, submitActionHandler, cancelActionHandler }) {
         {!selectedOpt && <OptionMenu slot={slot} handlers={handlers} />}
         {selectedOpt === 'add' && (
           <AddUnit
-            slot={slot}
+            unit={unit}
             submitActionHandler={submitActionHandler}
             cancelActionHandler={cancelActionHandler}
           />

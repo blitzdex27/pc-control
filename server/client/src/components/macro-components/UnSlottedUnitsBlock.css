@@ -1,0 +1,31 @@
+.unslotted-units-block-cont {
+  grid-column: 12 / 14;
+  grid-row: 2/3;
+  background-color: aqua;
+  height: 100%;
+  display:grid;
+  grid-template-columns: 10px 1fr 60px 10px;
+}
+
+.unslotted-units-block {
+  grid-column: 2/4;
+  max-height: calc((100vh - 80px));
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(3, 1fr);
+  gap: 5px;
+  /* padding: 10px; */
+  background-color: #deb228;
+  /* margin: 10px; */
+  overflow: scroll;
+}
+
+.unslotted-units-block-cont h2 {
+  grid-column: 2/3;
+  align-self: center;
+}
+.unslotted-units-block-cont button {
+  align-self: center;
+  padding:10px
+}
+

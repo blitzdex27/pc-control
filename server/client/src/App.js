@@ -1,28 +1,22 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import PcBlock from './components/PcBlock';
-import { pcUnitsInitState, optionInitState } from './initStates';
+
+import UnitsBlock from './components/macro-components/UnitsBlock';
+import UnSlottedUnitsBlock from './components/macro-components/UnSlottedUnitsBlock';
 import OptionBox from './components/OptionBox';
+
+import { pcUnitsInitState, optionInitState } from './initStates';
+import sort from './lib/sort';
 
 function App() {
   const [computerUnits, setComputerUnits] = useState([...pcUnitsInitState()]);
+  const [unSlottedUnits, setUnSlottedUnits] = useState([]);
   const [option, setOption] = useState(optionInitState);
 
   /**
    * Sort descending
    */
-  computerUnits.sort((a, b) => {
-    const aSlot = a.slot;
-    const bSlot = b.slot;
-
-    if (aSlot > bSlot) {
-      return 1;
-    } else if (aSlot < bSlot) {
-      return -1;
-    } else {
-      return 0;
-    }
-  });
+  sort(computerUnits, { propBase: 'slot', ascending: false });
 
   /**
    * update state of units
@@ -31,32 +25,40 @@ function App() {
     const update = async () => {
       const result = await fetch('/units-states');
       const json = await result.json();
-
+      console.log(json);
       return json;
     };
-    update().then((unitsStates) => {
-      if (unitsStates) {
-        const cU = [...pcUnitsInitState()];
-        const newCU = [];
+    update().then(({ updUnits, unSlottedUnits: unSlotted }) => {
+      console.log('updating...');
 
-        for (let i = 0; i < pcUnitsInitState().length; i += 1) {
-          for (let j = 0; j < unitsStates.length; j += 1) {
-            if (i + 1 === unitsStates[j].slot) {
-              newCU.push(unitsStates[j]);
-            }
-          }
-          const occupiedSlots = newCU.map((unit) => unit.slot);
-          console.log(occupiedSlots);
-          console.log(occupiedSlots.includes(cU.find((unit) => unit.slot)));
+      if (updUnits) {
+        const updSlots = updUnits.map((unit) => unit.slot);
+        const units = pcUnitsInitState().filter(
+          (unit) => !updSlots.includes(unit.slot)
+        );
 
-          if (!occupiedSlots.includes(cU[i].slot)) {
-            const index = cU.findIndex((unit) => unit.slot === i + 1);
-            newCU.push(cU[index]);
-          }
-        }
-        console.log(newCU);
-        setComputerUnits(newCU);
+        units.push(...updUnits);
+        console.log(units);
+        setComputerUnits(units);
+        setUnSlottedUnits(unSlotted);
       }
+
+      // setUnSlottedUnits(unSlottedUnits);
+
+      // for (let i = 0; i < pcUnitsInitState().length; i += 1) {
+      //   for (let j = 0; j < updUnits.length; j += 1) {
+      //     if (i + 1 === updUnits[j].slot) {
+      //       newCU.push(updUnits[j]);
+      //     }
+      //   }
+      //   const occupiedSlots = newCU.map((unit) => unit.slot);
+
+      //   if (!occupiedSlots.includes(cU[i].slot)) {
+      //     const index = cU.findIndex((unit) => unit.slot === i + 1);
+      //     newCU.push(cU[index]);
+      //   }
+      // }
+      // }
     });
   };
 
@@ -68,10 +70,10 @@ function App() {
     // eslint-disable-next-line
   }, []);
 
-  const optionHandler = (e, slot) => {
+  const optionHandler = (unit) => {
     setOption({
       show: true,
-      slot: slot,
+      unit: unit,
     });
   };
 
@@ -96,20 +98,32 @@ function App() {
     setOption(optionInitState);
   };
 
+  const scanHandler = async () => {
+    const response = await fetch('/other-units');
+    const json = await response.json();
+    setUnSlottedUnits(json);
+  };
+
   return (
     <>
       <div className="App">
-        {computerUnits.map((unit) => {
-          return <PcBlock unit={unit} optionHandler={optionHandler} />;
-        })}
-      </div>
-      {option.show && (
-        <OptionBox
-          slot={option.slot}
-          submitActionHandler={submitActionHandler}
-          cancelActionHandler={cancelActionHandler}
+        <UnitsBlock
+          computerUnits={computerUnits}
+          optionHandler={optionHandler}
         />
-      )}
+        <UnSlottedUnitsBlock
+          unSlottedUnits={unSlottedUnits}
+          optionHandler={optionHandler}
+          scanHandler={scanHandler}
+        />
+        {option.show && (
+          <OptionBox
+            unit={option.unit}
+            submitActionHandler={submitActionHandler}
+            cancelActionHandler={cancelActionHandler}
+          />
+        )}
+      </div>
     </>
   );
 }

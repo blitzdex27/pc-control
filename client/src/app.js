@@ -2,7 +2,7 @@ import express from 'express';
 import runScript from './runScript';
 import { runCommand, parseToJSObject } from './cmdLib';
 
-require('regenerator-runtime')
+require('regenerator-runtime');
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -12,13 +12,21 @@ let pcName;
 
 runCommand('set').then(({ stdout, stderr }) => {
   pcName = parseToJSObject(stdout).COMPUTERNAME;
-  console.log(pcName);
 });
 
 app.get('/', (req, res) => {
   console.log('listening');
 
-  res.json({ status: 'online', pcName });
+  const unitProp = {
+    pcName,
+    status: {
+      online: true,
+      action: null,
+      mounted: true,
+    },
+  };
+
+  res.json(unitProp);
 });
 
 app.get('/command', (req, res) => {

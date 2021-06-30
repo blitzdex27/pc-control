@@ -2,10 +2,12 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const fetch = require('node-fetch');
-const fetchOnlineStatus = require('./controllers/fetchOnlineStatus');
+
 const otherMountedUnitsRoute = require('./routes/otherMountedUnitsRoute');
+const updateUnitSlot = require('./controllers/updateUnitSlot');
 
 const updateUnitRoute = require('./routes/updateUnitRoute');
+const unitsStatesRoute = require('./routes/unitsStatesRoute');
 
 require('regenerator-runtime');
 
@@ -23,19 +25,7 @@ app.get('/', (req, res) => {
   res.sendFile('/');
 });
 
-app.get('/units-states', async (req, res) => {
-  const units = JSON.parse(fs.readFileSync(unitsStatePath, 'UTF-8'));
-  let updatedUnits;
-  try {
-    updatedUnits = await Promise.all(
-      units.map((unit) => fetchOnlineStatus(unit, clientPort))
-    );
-  } catch (error) {
-    console.log('error', error);
-  }
-
-  res.json(updatedUnits);
-});
+app.use('/units-states', unitsStatesRoute);
 
 app.get('/run-command', async (req, res) => {
   const { slot, cmd } = req.query;
@@ -54,6 +44,7 @@ app.get('/run-command', async (req, res) => {
 
 app.use('/update-unit', updateUnitRoute);
 app.use('/other-units', otherMountedUnitsRoute);
+app.use('/update-unit-slot', updateUnitSlot);
 
 app.use((res, req, next) => next(new Error('Not found')));
 

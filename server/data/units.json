@@ -10,16 +10,6 @@
     "ip": "192.168.1.50"
   },
   {
-    "slot": 2,
-    "pcName": "dex",
-    "status": {
-      "online": false,
-      "action": null,
-      "mounted": true
-    },
-    "ip": "192.168.1.51"
-  },
-  {
     "slot": 3,
     "pcName": "dex2",
     "status": {
@@ -30,23 +20,13 @@
     "ip": "192.168.1.52"
   },
   {
-    "slot": 4,
-    "pcName": "dex3",
+    "pcName": "DESKTOP-PQLTFVJ\r",
     "status": {
-      "online": false,
+      "online": true,
       "action": null,
       "mounted": true
     },
-    "ip": "192.168.1.53"
-  },
-  {
-    "slot": 5,
-    "pcName": "dex4",
-    "status": {
-      "online": false,
-      "action": null,
-      "mounted": true
-    },
-    "ip": "192.168.1.5"
+    "ip": "192.168.1.6",
+    "slot": 23
   }
 ]

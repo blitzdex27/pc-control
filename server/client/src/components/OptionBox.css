@@ -49,6 +49,7 @@
 
   background-color: rgb(36, 35, 35);
   color: white;
+  display: grid;
 }
 .run-cmd > h2,
 form {
@@ -63,4 +64,9 @@ form {
 .run-cmd > div {
   margin: 2% 5%;
   border-top: 1px solid white;
+
+}
+.cmd-out {
+  overflow: scroll;
+  width: auto;
 }
