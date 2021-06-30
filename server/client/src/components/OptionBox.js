@@ -11,7 +11,7 @@ function AddUnit({ slot, submitActionHandler, cancelActionHandler }) {
   };
 
   return (
-    <form onSubmit={formHandler} className="add-unit">
+    <form onSubmit={formHandler} className="mod-unit">
       <h2>Add/Modify PC Unit [SLOT {slot}]</h2>
       <label>PC Name:</label>
       <input ref={pcName} type="text"></input>
@@ -28,7 +28,7 @@ function RemoveUnit({ slot, submitActionHandler, cancelActionHandler }) {
     submitActionHandler(e, url);
   };
   return (
-    <form onSubmit={formHandler} className="add-unit">
+    <form onSubmit={formHandler} className="mod-unit">
       <h2>Remove PC Unit [SLOT {slot}]</h2>
       <p>Are you sure you want to remove this PC Unit?</p>
       <button type="submit">Yes</button>
@@ -45,7 +45,7 @@ function ShutdownUnit({ slot, submitActionHandler, cancelActionHandler }) {
     submitActionHandler(e, url);
   };
   return (
-    <form onSubmit={formHandler} className="add-unit">
+    <form onSubmit={formHandler} className="mod-unit">
       <h2>Shutdown PC Unit</h2>
       <p>Are you sure you want to SHUTDOWN this PC Unit?</p>
       <button type="submit">Yes</button>
@@ -74,12 +74,12 @@ function RunCMD({ slot, submitActionHandler, cancelActionHandler }) {
   };
   return (
     <div className="run-cmd">
-    <h2>Pseudo Command Line Interface</h2>
+      <h2>Pseudo Command Line Interface</h2>
       <form onSubmit={formHandler}>
         <label>Command:</label>
-        <input ref={cmd} type="text" placeholder='Enter command here...' />
+        <input ref={cmd} type="text" placeholder="Enter command here..." />
       </form>
-      <div className='cmd-out'>
+      <div className="cmd-out">
         <h2>OUTPUT</h2>
         <pre>{cmdOut && cmdOut.stdout}</pre>
         <h2>ERRORS</h2>

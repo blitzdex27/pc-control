@@ -2,7 +2,7 @@
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template-rows: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
   text-align: center;
 }
 
@@ -19,17 +19,17 @@
   z-index: 10;
 }
 
-.add-unit {
+.mod-unit {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr 25px 25px 25px 25px 1fr 1fr;
   row-gap: 50px;
 }
-.add-unit > * {
+.mod-unit > * {
   grid-column: 2/4;
 }
 
-.add-unit > button {
+.mod-unit > button {
   height: 100%;
 }
 .backdrop {
@@ -41,6 +41,8 @@
   top: 0;
 }
 
+/*----------------------------------------------
+------- RUN COMMAND STYLES */
 .run-cmd {
   width: var(--w);
   height: var(--h);

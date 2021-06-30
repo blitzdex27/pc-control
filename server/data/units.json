@@ -48,15 +48,5 @@
       "mounted": true
     },
     "ip": "192.168.1.5"
-  },
-  {
-    "slot": 6,
-    "pcName": "Dexter",
-    "status": {
-      "online": false,
-      "action": null,
-      "mounted": true
-    },
-    "ip": "192.168.1.2"
   }
 ]

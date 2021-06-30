@@ -3,6 +3,7 @@ const path = require('path');
 const fs = require('fs');
 const fetch = require('node-fetch');
 const fetchOnlineStatus = require('./controllers/fetchOnlineStatus');
+const otherMountedUnitsRoute = require('./routes/otherMountedUnitsRoute');
 
 const updateUnitRoute = require('./routes/updateUnitRoute');
 
@@ -40,25 +41,30 @@ app.get('/units-states', async (req, res) => {
 
 app.get('/run-command', async (req, res) => {
   const { slot, cmd } = req.query;
-  console.log(slot, cmd)
+  console.log(slot, cmd);
   const units = JSON.parse(fs.readFileSync(unitsStatePath));
   console.log(units);
-  const {ip} = units.find((unit) => unit.slot === parseInt(slot, 10));
+  const { ip } = units.find((unit) => unit.slot === parseInt(slot, 10));
   console.log(ip);
   const response = await fetch(
     `http://${ip}:${clientPort}/run-command/?cmd=${cmd}`
   );
   const json = await response.json();
-    console.log(json)
+  console.log(json);
   res.json(json);
 });
 
 app.use('/update-unit', updateUnitRoute);
+app.use('/other-units', otherMountedUnitsRoute);
 
-app.use((res, req, next) => {
-  res.send(`
+app.use((res, req, next) => next(new Error('Not found')));
+
+app.use((error, req, res, next) => {
+  res.status(404).send(`
+  <div>
   <h1>Error!</h1>
   <p>Something went wrong</p>
+  </div>
   `);
 });
 
