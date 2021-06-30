@@ -1,19 +1,18 @@
 import cp from 'child_process';
-import { fileURLToPath } from 'url';
 import { promisify } from 'util';
+
+require('regenerator-runtime');
 
 const exec = promisify(cp.exec);
 
 export const runCommand = async (cmd) => {
-
   try {
     const { stdout, stderr } = await exec(cmd);
 
     return { stdout, stderr };
-  } catch(e) {
-    return {stdout:'', stderr: e.message}
+  } catch (e) {
+    return { stdout: '', stderr: e.message };
   }
-
 };
 
 export const parseToJSObject = (stdoutString) => {

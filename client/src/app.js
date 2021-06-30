@@ -2,6 +2,8 @@ import express from 'express';
 import runScript from './runScript';
 import { runCommand, parseToJSObject } from './cmdLib';
 
+require('regenerator-runtime')
+
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());

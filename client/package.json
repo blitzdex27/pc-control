@@ -33,6 +33,7 @@
     "webpack-node-externals": "^3.0.0"
   },
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "regenerator-runtime": "^0.13.7"
   }
 }
