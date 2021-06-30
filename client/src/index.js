@@ -1,4 +1,3 @@
-require('regenerator-runtime');
 import app from './app';
 
 const port = 1010;

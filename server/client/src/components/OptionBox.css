@@ -40,3 +40,25 @@
   position: absolute;
   top: 0;
 }
+
+.run-cmd {
+  width: var(--w);
+  height: var(--h);
+
+  background-color: rgb(36, 35, 35);
+  color: white;
+}
+.run-cmd > h2,
+form {
+  text-align: center;
+}
+.run-cmd label {
+  display: none;
+}
+.run-cmd input {
+  width: 70%;
+}
+.run-cmd > div {
+  margin: 2% 5%;
+  border-top: 1px solid white;
+}

@@ -17,6 +17,8 @@ const unitsStatePath = path.resolve(
   'units.json'
 );
 
+const clientPort = 1010;
+
 router.put('/', async (req, res, next) => {
   try {
     const { action, slot, pcname, ipadd } = req.query;
@@ -27,7 +29,7 @@ router.put('/', async (req, res, next) => {
       const newUnit = {
         slot: slotInt,
         pcName: pcname,
-        status: { online: false, action: null, mounted: false },
+        status: { online: false, action: null, mounted: true },
         ip: ipadd,
       };
 
@@ -50,19 +52,23 @@ router.put('/', async (req, res, next) => {
     } else if (action === 'shutdown') {
       console.log('\nshutting down');
       const selUnit = units.find((unit) => unit.slot === parseInt(slot, 10));
-      const url = `http://${selUnit.ip}/command/?action=shutdown`;
-      const result = await pcAction(url);
+      const url = `http://${selUnit.ip}:${clientPort}/command/?action=shutdown`;
+      // const result = await pcAction(url);
 
-      // const result = await fetch(url, {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-type': 'application/json',
-      //   },
-      //   body: JSON.stringify({ action: 'shutdown' }),
-      // });
-      // const json = await result.json();
+      const result = await fetch(
+        url
+        //   , {
+        //   method: 'POST',
+        //   headers: {
+        //     'Content-type': 'application/json',
+        //   },
+        //   body: JSON.stringify({ action: 'shutdown' }),
+        // }
+      );
+      const json = await result.json();
+      console.log(json);
 
-      if (result.success) {
+      if (json.success) {
         units.forEach((unit) => {
           if (unit.slot === slot) {
             // eslint-disable-next-line no-param-reassign

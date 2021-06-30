@@ -1,5 +1,7 @@
 const puppeteer = require('puppeteer');
 
+require('regenerator-runtime');
+
 const runBrowser = async (url) => {
   try {
     const browser = await puppeteer.launch({ headless: true });

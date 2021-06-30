@@ -45,10 +45,7 @@ function ShutdownUnit({ slot, submitActionHandler, cancelActionHandler }) {
     submitActionHandler(e, url);
   };
   return (
-    <form
-      onSubmit={formHandler}
-      className="add-unit"
-    >
+    <form onSubmit={formHandler} className="add-unit">
       <h2>Shutdown PC Unit</h2>
       <p>Are you sure you want to SHUTDOWN this PC Unit?</p>
       <button type="submit">Yes</button>
@@ -59,14 +56,48 @@ function ShutdownUnit({ slot, submitActionHandler, cancelActionHandler }) {
   );
 }
 
+function RunCMD({ slot, submitActionHandler, cancelActionHandler }) {
+  const [cmdOut, setCmdOut] = useState(null);
+  const cmd = useRef();
+
+  const formHandler = async (e) => {
+    e.preventDefault();
+    const response = await fetch(
+      `/run-command/?slot=${slot}&cmd=${cmd.current.value}`
+    );
+    const json = await response.json();
+    const out = {
+      stdout: json.stdout,
+      stderr: json.stderr,
+    };
+    setCmdOut(out);
+  };
+  return (
+    <div className="run-cmd">
+    <h2>Pseudo Command Line Interface</h2>
+      <form onSubmit={formHandler}>
+        <label>Command:</label>
+        <input ref={cmd} type="text" placeholder='Enter command here...' />
+      </form>
+      <div className='cmd-out'>
+        <h2>OUTPUT</h2>
+        <pre>{cmdOut && cmdOut.stdout}</pre>
+        <h2>ERRORS</h2>
+        <pre>{cmdOut && cmdOut.stderr}</pre>
+      </div>
+    </div>
+  );
+}
+
 function OptionMenu({ slot, handlers }) {
-  const { addPc, removePc, shutdownPc } = handlers;
+  const { addPc, removePc, shutdownPc, runCMD } = handlers;
   return (
     <div className="option-menu">
       <h2>What do you want to do with [SLOT {slot}]?</h2>
       <button onClick={addPc}>Add/Modify PC</button>
       <button onClick={removePc}>Remove PC</button>
       <button onClick={shutdownPc}>Shutdown</button>
+      <button onClick={runCMD}>Run command</button>
     </div>
   );
 }
@@ -83,6 +114,9 @@ function OptionBox({ slot, submitActionHandler, cancelActionHandler }) {
     },
     shutdownPc: () => {
       setSelectedOpt('shutdown');
+    },
+    runCMD: () => {
+      setSelectedOpt('runcmd');
     },
   };
 
@@ -106,6 +140,13 @@ function OptionBox({ slot, submitActionHandler, cancelActionHandler }) {
         )}
         {selectedOpt === 'shutdown' && (
           <ShutdownUnit
+            slot={slot}
+            submitActionHandler={submitActionHandler}
+            cancelActionHandler={cancelActionHandler}
+          />
+        )}
+        {selectedOpt === 'runcmd' && (
+          <RunCMD
             slot={slot}
             submitActionHandler={submitActionHandler}
             cancelActionHandler={cancelActionHandler}

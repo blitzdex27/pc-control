@@ -1,5 +1,6 @@
 import express from 'express';
 import runScript from './runScript';
+import { runCommand, parseToJSObject } from './cmdLib';
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -19,6 +20,11 @@ app.get('/command', (req, res) => {
   } else {
     res.status(400);
   }
+});
+
+app.get('/run-command', async (req, res) => {
+  const { stdout, stderr } = await runCommand(req.query.cmd);
+  res.json({ stdout, stderr });
 });
 
 export default app;
