@@ -22,7 +22,7 @@ const unSlottedUnitsPath = path.resolve(
 
 const fetchMountedUnit = (ip) =>
   new Promise((resolve, reject) => {
-    setTimeout(() => resolve({ status: 'offline', ip }), 1000);
+    setTimeout(() => resolve({ status: 'offline', pcName: '', ip }), 1000);
 
     const f = async () => {
       let response;
@@ -68,7 +68,7 @@ module.exports = async (req, res) => {
     responses.forEach((response) => {
       const unSlottedUnit = {
         slot: null,
-        pcName: '',
+        pcName: response.pcName,
         status: {
           online: true,
           action: null,

@@ -25,18 +25,16 @@ app.get('/', (req, res) => {
 
 app.get('/units-states', async (req, res) => {
   const units = JSON.parse(fs.readFileSync(unitsStatePath, 'UTF-8'));
-
+  let updatedUnits;
   try {
-    const updatedUnits = await Promise.all(
+    updatedUnits = await Promise.all(
       units.map((unit) => fetchOnlineStatus(unit, clientPort))
     );
-
-    console.log(updatedUnits);
   } catch (error) {
     console.log('error', error);
   }
 
-  res.json(units);
+  res.json(updatedUnits);
 });
 
 app.get('/run-command', async (req, res) => {

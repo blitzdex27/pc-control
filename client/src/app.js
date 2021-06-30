@@ -6,9 +6,17 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+let pcName;
+
+runCommand('set').then(({ stdout, stderr }) => {
+  pcName = parseToJSObject(stdout).COMPUTERNAME;
+  console.log(pcName);
+});
+
 app.get('/', (req, res) => {
   console.log('listening');
-  res.json({ status: 'online' });
+
+  res.json({ status: 'online', pcName });
 });
 
 app.get('/command', (req, res) => {
