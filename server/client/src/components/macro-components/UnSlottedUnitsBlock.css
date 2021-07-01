@@ -3,13 +3,13 @@
   grid-row: 2/3;
   background-color: aqua;
   height: 100%;
-  display:grid;
+  display: grid;
   grid-template-columns: 10px 1fr 60px 10px;
 }
 
 .unslotted-units-block {
   grid-column: 2/4;
-  max-height: calc((100vh - 80px));
+  min-height: calc((100vh - 80px));
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: repeat(3, 1fr);
@@ -26,6 +26,5 @@
 }
 .unslotted-units-block-cont button {
   align-self: center;
-  padding:10px
+  padding: 10px;
 }
-

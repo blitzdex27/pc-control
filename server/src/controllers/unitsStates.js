@@ -2,6 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const fetch = require('node-fetch');
 
+require('regenerator-runtime');
+
 const isProd = path.parse(process.argv[1]).name === 'main';
 
 const dataPath = path.resolve(__dirname, `../${isProd ? '' : '..'}`, 'data');

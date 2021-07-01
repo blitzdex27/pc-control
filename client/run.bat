@@ -1,3 +1,3 @@
 @echo off
 
-npm run dev:start
+node dist/main

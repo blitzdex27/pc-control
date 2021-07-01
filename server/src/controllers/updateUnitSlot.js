@@ -2,6 +2,8 @@ const { Router } = require('express');
 const path = require('path');
 const fs = require('fs');
 
+require('regenerator-runtime');
+
 const router = new Router();
 
 const isProd = path.parse(process.argv[1]).name === 'main';

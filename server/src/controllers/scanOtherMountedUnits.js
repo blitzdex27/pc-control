@@ -2,6 +2,8 @@ const path = require('path');
 const fs = require('fs');
 const fetch = require('node-fetch');
 
+require('regenerator-runtime');
+
 const clientPort = 1010;
 
 const isProd = path.parse(process.argv[1]).name === 'main';

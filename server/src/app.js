@@ -28,14 +28,10 @@ app.get('/', (req, res) => {
 app.use('/units-states', unitsStatesRoute);
 
 app.get('/run-command', async (req, res) => {
-  const { slot, cmd } = req.query;
-  console.log(slot, cmd);
-  const units = JSON.parse(fs.readFileSync(unitsStatePath));
-  console.log(units);
-  const { ip } = units.find((unit) => unit.slot === parseInt(slot, 10));
-  console.log(ip);
+  const { ip, cmd } = req.query;
+
   const response = await fetch(
-    `http://${ip}:${clientPort}/run-command/?cmd=${cmd}`
+    `http://${ip}:${clientPort}/run-command/?cmd=${encodeURIComponent(cmd)}`
   );
   const json = await response.json();
   console.log(json);

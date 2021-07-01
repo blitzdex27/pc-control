@@ -54,15 +54,16 @@ function ShutdownUnit({ slot, submitActionHandler, cancelActionHandler }) {
   );
 }
 
-function RunCMD({ slot, submitActionHandler, cancelActionHandler }) {
+function RunCMD({ ip, submitActionHandler, cancelActionHandler }) {
   const [cmdOut, setCmdOut] = useState(null);
   const cmd = useRef();
-
+  
   const formHandler = async (e) => {
     e.preventDefault();
     const response = await fetch(
-      `/run-command/?slot=${slot}&cmd=${cmd.current.value}`
+      `/run-command/?ip=${encodeURIComponent(ip)}&cmd=${encodeURIComponent(cmd.current.value)}`
     );
+    console.log(`/run-command/?ip=${encodeURIComponent(ip)}&cmd=${encodeURIComponent(cmd.current.value)}`)
     const json = await response.json();
     const out = {
       stdout: json.stdout,
@@ -146,7 +147,7 @@ function OptionBox({ unit, submitActionHandler, cancelActionHandler }) {
         )}
         {selectedOpt === 'runcmd' && (
           <RunCMD
-            slot={slot}
+            ip={unit.ip}
             submitActionHandler={submitActionHandler}
             cancelActionHandler={cancelActionHandler}
           />

@@ -41,6 +41,7 @@ app.get('/command', (req, res) => {
 });
 
 app.get('/run-command', async (req, res) => {
+  console.log(req.query.cmd);
   const { stdout, stderr } = await runCommand(req.query.cmd);
   res.json({ stdout, stderr });
 });
