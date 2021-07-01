@@ -15,7 +15,7 @@ runCommand('set').then(({ stdout, stderr }) => {
 });
 
 app.get('/', (req, res) => {
-  console.log('listening');
+  console.log(`Listening from request of ${req.connection.remoteAddress}`);
 
   const unitProp = {
     pcName,
