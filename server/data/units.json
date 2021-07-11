@@ -1,32 +1,12 @@
 [
   {
-    "slot": 1,
-    "pcName": "tess",
-    "status": {
-      "online": false,
-      "action": null,
-      "mounted": true
-    },
-    "ip": "192.168.1.50"
-  },
-  {
-    "pcName": "DESKTOP-PQLTFVJ\r",
+    "pcName": "TESS-PC002\r",
     "status": {
       "online": true,
       "action": null,
       "mounted": true
     },
-    "ip": "192.168.1.6",
-    "slot": 4
-  },
-  {
-    "slot": 5,
-    "pcName": "dex2",
-    "status": {
-      "online": false,
-      "action": null,
-      "mounted": true
-    },
-    "ip": "192.168.1.52"
+    "ip": "192.168.1.11",
+    "slot": 3
   }
 ]

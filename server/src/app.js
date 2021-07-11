@@ -38,6 +38,22 @@ app.get('/run-command', async (req, res) => {
   res.json(json);
 });
 
+app.get('/take-screenshot', async (req, res) => {
+  // const { ip } = req.query;
+  const ip = '192.168.1.4'
+  console.log('taking scnshot');
+  const response = await fetch(`http://${ip}:${clientPort}/take-screenshot`);
+  // console.log(response)
+  const blob = await response.blob();
+  const stream = await blob.stream()
+  console.log(blob)
+
+  // fs.writeFileSync(path.resolve(__dirname, '..', 'scnshot.jpg'), response);
+  // const file = fs.createReadStream(blob)
+  // res.sendFile(path.resolve(__dirname, '..', 'scnshot.jpg'));
+  stream.pipe(res)
+});
+
 app.use('/update-unit', updateUnitRoute);
 app.use('/other-units', otherMountedUnitsRoute);
 app.use('/update-unit-slot', updateUnitSlot);

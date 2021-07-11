@@ -64,9 +64,15 @@ form {
 .run-cmd > div {
   margin: 2% 5%;
   border-top: 1px solid white;
-
 }
 .cmd-out {
   overflow: scroll;
   width: auto;
+}
+
+/*---------------------------------------------
+---Screenshot */
+
+.scn-shot img {
+  max-width: 100%;
 }

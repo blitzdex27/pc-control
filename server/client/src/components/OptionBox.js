@@ -57,13 +57,19 @@ function ShutdownUnit({ slot, submitActionHandler, cancelActionHandler }) {
 function RunCMD({ ip, submitActionHandler, cancelActionHandler }) {
   const [cmdOut, setCmdOut] = useState(null);
   const cmd = useRef();
-  
+
   const formHandler = async (e) => {
     e.preventDefault();
     const response = await fetch(
-      `/run-command/?ip=${encodeURIComponent(ip)}&cmd=${encodeURIComponent(cmd.current.value)}`
+      `/run-command/?ip=${encodeURIComponent(ip)}&cmd=${encodeURIComponent(
+        cmd.current.value
+      )}`
     );
-    console.log(`/run-command/?ip=${encodeURIComponent(ip)}&cmd=${encodeURIComponent(cmd.current.value)}`)
+    console.log(
+      `/run-command/?ip=${encodeURIComponent(ip)}&cmd=${encodeURIComponent(
+        cmd.current.value
+      )}`
+    );
     const json = await response.json();
     const out = {
       stdout: json.stdout,
@@ -71,6 +77,7 @@ function RunCMD({ ip, submitActionHandler, cancelActionHandler }) {
     };
     setCmdOut(out);
   };
+
   return (
     <div className="run-cmd">
       <h2>Pseudo Command Line Interface</h2>
@@ -88,8 +95,38 @@ function RunCMD({ ip, submitActionHandler, cancelActionHandler }) {
   );
 }
 
+function TakeScnShot({ ip, cancelActionHandler }) {
+  const [screenshot, setScreenshot] = useState(null);
+
+  const fetchImage = async () => {
+    try {
+      const response = await fetch(`/take-screenshot/?ip=${ip}`, {
+        method: 'GET',
+        headers: {
+          'Content-type': 'image/jpeg',
+        },
+      });
+      const blob = await response.blob();
+
+      setScreenshot(URL.createObjectURL(blob));
+      // return [URL.createObjectURL(blob), null];
+    } catch (e) {
+      console.error('error occured!', e);
+      // return [null, e];
+    }
+  };
+
+  return (
+    <div className="scn-shot">
+      <button onClick={fetchImage}>Take Screenshot</button>
+      <button onClick={cancelActionHandler}>Exit</button>
+      <img className="image" src={screenshot} />
+    </div>
+  );
+}
+
 function OptionMenu({ slot, handlers }) {
-  const { addPc, removePc, shutdownPc, runCMD } = handlers;
+  const { addPc, removePc, shutdownPc, runCMD, takeScnShot } = handlers;
   return (
     <div className="option-menu">
       <h2>What do you want to do with [SLOT {slot}]?</h2>
@@ -97,6 +134,7 @@ function OptionMenu({ slot, handlers }) {
       <button onClick={removePc}>Remove PC</button>
       <button onClick={shutdownPc}>Shutdown</button>
       <button onClick={runCMD}>Run command</button>
+      <button onClick={takeScnShot}>Take Screenshot</button>
     </div>
   );
 }
@@ -117,6 +155,9 @@ function OptionBox({ unit, submitActionHandler, cancelActionHandler }) {
     },
     runCMD: () => {
       setSelectedOpt('runcmd');
+    },
+    takeScnShot: () => {
+      setSelectedOpt('takeScnShot');
     },
   };
 
@@ -147,6 +188,13 @@ function OptionBox({ unit, submitActionHandler, cancelActionHandler }) {
         )}
         {selectedOpt === 'runcmd' && (
           <RunCMD
+            ip={unit.ip}
+            submitActionHandler={submitActionHandler}
+            cancelActionHandler={cancelActionHandler}
+          />
+        )}
+        {selectedOpt === 'takeScnShot' && (
+          <TakeScnShot
             ip={unit.ip}
             submitActionHandler={submitActionHandler}
             cancelActionHandler={cancelActionHandler}
