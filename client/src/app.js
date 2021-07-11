@@ -1,6 +1,7 @@
 import express from 'express';
 import runScript from './runScript';
 import { runCommand, parseToJSObject } from './cmdLib';
+import takeScnShotRoute from './routes/takeScnShotRoute';
 
 require('regenerator-runtime');
 
@@ -45,5 +46,7 @@ app.get('/run-command', async (req, res) => {
   const { stdout, stderr } = await runCommand(req.query.cmd);
   res.json({ stdout, stderr });
 });
+
+app.use('/take-screenshot', takeScnShotRoute);
 
 export default app;
