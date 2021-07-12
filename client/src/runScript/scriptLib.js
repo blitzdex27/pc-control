@@ -11,3 +11,7 @@ export const shutdown = () => {
 export const restart = () => {
   cp.exec('restart /r');
 };
+
+export const update = () => {
+  cp.exec('nircmd.exe exec hide update.bat');
+};

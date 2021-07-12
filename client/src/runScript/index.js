@@ -1,4 +1,4 @@
-import { test, shutdown, restart } from './scriptLib';
+import { test, shutdown, restart, update } from './scriptLib';
 
 const runScript = (scriptName) => {
   let status = null;
@@ -15,9 +15,13 @@ const runScript = (scriptName) => {
       restart();
       status = 'Restarting';
       break;
+    case 'update':
+      update();
+      status = 'Updating';
+      break;
 
     default:
-      status = null
+      status = null;
   }
   return status;
 };

@@ -1,13 +1,16 @@
 import express from 'express';
+import cors from 'cors'
 import runScript from './runScript';
 import { runCommand, parseToJSObject } from './cmdLib';
 import takeScnShotRoute from './routes/takeScnShotRoute';
+
 
 require('regenerator-runtime');
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cors())
 
 let pcName;
 
