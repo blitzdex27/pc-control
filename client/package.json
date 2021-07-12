@@ -1,6 +1,6 @@
 {
   "name": "pc-control-client",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "This is an auxiliary app. The project that aims to setup the Node development automatically. The following are the basic setup configurations that will be installed:",
   "main": "index.js",
   "scripts": {

@@ -28,30 +28,34 @@ app.get('/', (req, res) => {
 app.use('/units-states', unitsStatesRoute);
 
 app.get('/run-command', async (req, res) => {
-  const { ip, cmd } = req.query;
+  try {
+    const { ip, cmd } = req.query;
 
-  const response = await fetch(
-    `http://${ip}:${clientPort}/run-command/?cmd=${encodeURIComponent(cmd)}`
-  );
-  const json = await response.json();
-  console.log(json);
-  res.json(json);
+    const response = await fetch(
+      `http://${ip}:${clientPort}/run-command/?cmd=${encodeURIComponent(cmd)}`
+    );
+    const json = await response.json();
+    console.log(json);
+    res.json(json);
+  } catch (e) {
+    console.error(e.message);
+  }
 });
 
 app.get('/take-screenshot', async (req, res) => {
   // const { ip } = req.query;
-  const ip = '192.168.1.4'
+  const ip = '192.168.1.4';
   console.log('taking scnshot');
   const response = await fetch(`http://${ip}:${clientPort}/take-screenshot`);
   // console.log(response)
   const blob = await response.blob();
-  const stream = await blob.stream()
-  console.log(blob)
+  const stream = await blob.stream();
+  console.log(blob);
 
   // fs.writeFileSync(path.resolve(__dirname, '..', 'scnshot.jpg'), response);
   // const file = fs.createReadStream(blob)
   // res.sendFile(path.resolve(__dirname, '..', 'scnshot.jpg'));
-  stream.pipe(res)
+  stream.pipe(res);
 });
 
 app.use('/update-unit', updateUnitRoute);
