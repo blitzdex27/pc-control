@@ -1,1 +1,3 @@
-[UPDATE] - nircmd.exe exec hide update.bat
+%HOMEDRIVE%/client/client/nircmd.exe exec hide run.bat
+
+nircmd.exe exec hide update.bat

@@ -8,5 +8,15 @@
     },
     "ip": "192.168.1.11",
     "slot": 3
+  },
+  {
+    "pcName": "TESS-PC0012\r",
+    "status": {
+      "online": true,
+      "action": null,
+      "mounted": true
+    },
+    "ip": "192.168.1.23",
+    "slot": 13
   }
 ]
