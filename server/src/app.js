@@ -43,8 +43,7 @@ app.get('/run-command', async (req, res) => {
 });
 
 app.get('/take-screenshot', async (req, res) => {
-  // const { ip } = req.query;
-  const ip = '192.168.1.4';
+  const { ip } = req.query;
   console.log('taking scnshot');
   const response = await fetch(`http://${ip}:${clientPort}/take-screenshot`);
   // console.log(response)

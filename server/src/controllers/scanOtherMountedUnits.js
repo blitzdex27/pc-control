@@ -54,9 +54,7 @@ module.exports = async (req, res) => {
     responses = await Promise.all(ipList.map((ip) => fetchMountedUnit(ip)));
 
     responses = responses.filter((response) => response.status.online);
-
-    console.log(responses);
-
+    console.log('responses', responses);
     const unSlottedUnits = [];
 
     unSlottedUnits.push(...responses);
